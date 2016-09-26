@@ -1,0 +1,7 @@
+CREATE TABLE itemrecords (id serial PRIMARY KEY, patronid int, itemid int, datecheckedout timestamp, datecheckedin timestamp, timesRenewed int);
+CREATE TABLE items (id serial PRIMARY KEY, title varchar, author varchar, itemtype int currentRecord int);
+CREATE TABLE itemtypes (id serial PRIMARY KEY, name varchar);
+CREATE TABLE patrons (id serial PRIMARY KEY, name varchar, email varchar);
+
+CREATE DATABASE library;
+REATE DATABASE library_test WITH TEMPLATE library;
