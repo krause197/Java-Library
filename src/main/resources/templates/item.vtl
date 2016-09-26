@@ -1,0 +1,22 @@
+<h2>Item Details</h2>
+Title: $item.getTitle()
+<br>Author: $item.getAuthor()
+<br>Type: $item.getItemType()
+
+<br>Temp: $temp
+<br>Current Record: $item.getCurrentRecord()
+
+<h2>Item Checkout</h2>
+#if ($item.getCurrentRecord() < 0)
+  <form action="/items/checkout" method="post">
+    <select name='item-checkout-patronid' type='text'>
+     #foreach($patron in $patrons)
+       <option value="$patron.getId()">$patron.getName()</option>
+     #end
+    </select>
+    <input name="item-checkout-itemid" type="hidden" value="$item.getId()">
+    <button type="submit" class="btn btn-success">Check Out</button>
+  </form>
+#else
+    <p>Item is Checked Out By </p>
+#end

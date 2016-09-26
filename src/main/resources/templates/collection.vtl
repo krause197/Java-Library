@@ -1,0 +1,22 @@
+<h2>$itemtype.getName(): <h2>
+
+#if($items.size() > 0)
+  <ul>
+    #foreach ($item in $items)
+      <li><a href="/items/$item.getId()">$item.getTitle() by $item.getAuthor()</a></li>
+    #end
+  </ul>
+#else
+  <p>There are no $itemtype.getName() in this collection</p>
+#end
+
+<hr>
+<h3>Add a New Item:</h3>
+<form action="/items/new" method="post">
+  <label for="new-item-title">Title: </label>
+  <input name="new-item-title" type="text">
+  <label for="new-item-author">Author: </label>
+  <input name="new-item-author" type="text">
+  <input name="new-item-type" type="hidden" value="$itemtype.getId()">
+  <button type="submit" class="btn btn-success">Add New Item</button>
+</form>

@@ -1,0 +1,18 @@
+<h2>Patron Details</h2>
+Name: $patron.getName()
+<br>Email: $patron.getEmail()
+
+
+<h2>Items Currently Out</h2>
+#if($records.size() > 0)
+  <ul>
+    #foreach ($record in $records)
+      <li>$Item.find($record.getItemId()).getTitle()</li>
+    #end
+  </ul>
+#else
+  <p>There are no items yet</p>
+#end
+
+
+<h2>Checkout History</h2>

@@ -10,7 +10,8 @@ public class Item {
   private String title;
   private String author;
   private int itemtype;
-  private int currentRecord;
+  private int currentrecord;
+  private int testInt = 999;
 
   public static final int MAX_DAYS_LOANED = 3;
 
@@ -18,7 +19,7 @@ public class Item {
     this.title = title;
     this.author = author;
     this.itemtype = itemtype;
-    this.currentRecord = -1;
+    this.currentrecord = 999;
   }
 
   public int getId(){
@@ -34,14 +35,15 @@ public class Item {
   }
 
   public String getItemType(){
-    return ItemType.getName(this.id);
+    return ItemType.getName(this.itemtype);
   }
 
-  public ItemRecord getCurrentRecord(){
-    if (currentRecord < 0)
-      return null;
-    else
-      return ItemRecord.find(this.currentRecord);
+  public int getCurrentRecord(){
+      return this.currentrecord;
+  }
+
+  public int testReturnInt(){
+      return testInt;
   }
 
   public List<ItemRecord> getRecords() {
@@ -53,11 +55,30 @@ public class Item {
     }
   }
 
-  public static Item find(int id) {
+  // public static List<Item> all(int itemType) {
+  //   String sql = "SELECT * FROM items WHERE itemtype=:itemtype";
+  //   try(Connection con = DB.sql2o.open()) {
+  //     return con.createQuery(sql)
+  //     .addParameter("itemtype", this.itemtype)
+  //     .executeAndFetch(ItemType.class);
+  //   }
+  // }
+
+  public static List<Item> findAll(int itemTypeId) {
       try(Connection con = DB.sql2o.open()) {
-        String sql = "SELECT * FROM items WHERE id=:id";
+        String sql = "SELECT * FROM items WHERE itemtype=:itemtype";
+        List<Item> items = con.createQuery(sql)
+          .addParameter("itemtype", itemTypeId)
+          .executeAndFetch(Item.class);
+        return items;
+      }
+    }
+
+    public static Item find(int itemId) {
+      try(Connection con = DB.sql2o.open()) {
+        String sql = "SELECT * FROM items WHERE id=:itemid";
         Item item = con.createQuery(sql)
-          .addParameter("id", id)
+          .addParameter("itemid", itemId)
           .executeAndFetchFirst(Item.class);
         return item;
       }
@@ -65,17 +86,26 @@ public class Item {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO items (title, author, itemtype, currentRecord) VALUES (:title, :author, :itemtype, :currentRecord)";
+      String sql = "INSERT INTO items (title, author, itemtype, currentrecord) VALUES (:title, :author, :itemtype, :currentrecord)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("title", this.title)
         .addParameter("author", this.author)
         .addParameter("itemtype", this.itemtype)
-        .addParameter("currentRecord", this.currentRecord)
+        .addParameter("currentrecord", this.currentrecord)
         .executeUpdate()
         .getKey();
     }
   }
 
+  public void setCurrentRecord(int crid){
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE items SET currentrecord = :crid WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("crid", crid)
+        .addParameter("id", this.id)
+        .executeUpdate();
+      }
+  }
 
   public void deleteItem(){
     try(Connection con = DB.sql2o.open()) {

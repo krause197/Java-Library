@@ -1,1 +1,59 @@
 <h1>Welcome to Epic Library</h1>
+
+<hr>
+<h2>Our Collections: </h2>
+#if($itemtypes.size() > 0)
+  <ul>
+    #foreach ($itemtype in $itemtypes)
+      <li><a href="/collections/$itemtype.getName()">$itemtype.getName()</a></li>
+    #end
+  </ul>
+#else
+  <p>There are no Item Types yet</p>
+#end
+
+
+<h3>Add an Item Type:</h3>
+<form action="/itemtypes/new" method="post">
+  <label for="new-item-type-name">Item Type Name: </label>
+  <input name="new-item-type-name" type="text">
+  <button type="submit" class="btn btn-success">Add Item Type</button>
+</form>
+
+<hr>
+<h3>Add a New Item:</h3>
+<form action="/items/new" method="post">
+  <label for="new-item-title">Title: </label>
+  <input name="new-item-title" type="text">
+  <label for="new-item-author">Author: </label>
+  <input name="new-item-author" type="text">
+  <select name='new-item-type' type='text'>
+   #foreach($itemtype in $itemtypes)
+     <option value="$itemtype.getId()">$itemtype.getName()</option>
+   #end
+  </select>
+  <button type="submit" class="btn btn-success">Add New Item</button>
+</form>
+
+<hr>
+<h2>Our Patrons: </h2>
+
+#if($patrons.size() > 0)
+  <ul>
+    #foreach ($patron in $patrons)
+      <li><a href="/patrons/$patron.getId()">$patron.getName()</a></li>
+    #end
+  </ul>
+#else
+  <p>There are no Patrons yet</p>
+#end
+
+
+<h3>Add a New Patron:</h3>
+<form action="/patrons/new" method="post">
+  <label for="new-patron-name">Name: </label>
+  <input name="new-patron-name" type="text">
+  <label for="new-patron-email">Email: </label>
+  <input name="new-patron-email" type="text">
+  <button type="submit" class="btn btn-success">Add Patron</button>
+</form>

@@ -46,6 +46,16 @@ public class ItemType {
       }
     }
 
+    public static ItemType find(String itemTypeName) {
+        try(Connection con = DB.sql2o.open()) {
+          String sql = "SELECT * FROM itemtypes WHERE name=:itemtypename";
+          ItemType type = con.createQuery(sql)
+            .addParameter("itemtypename", itemTypeName)
+            .executeAndFetchFirst(ItemType.class);
+          return type;
+        }
+      }
+
   public void save() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "INSERT INTO itemtypes (name) VALUES (:name)";

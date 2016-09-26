@@ -44,6 +44,16 @@ public class Patron {
     }
   }
 
+
+  public static List<Patron> all() {
+    String sql = "SELECT * FROM patrons";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+      .executeAndFetch(Patron.class);
+    }
+  }
+
+
   public void save() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "INSERT INTO patrons (name, email) VALUES (:name, :email)";
